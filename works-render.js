@@ -1,7 +1,11 @@
-// 第 5 课：把数据渲染成页面，并支持筛选和排序。
-//
-// 这个文件里没有一处写死的作品标题或网址——**全部来自 works-data.js**。
-// 想加作品、改标题、换封面，都只动数据文件。这就是"数据与视图分离"。
+/**
+ * 作品渲染器（数据驱动视图）
+ *
+ * 运维说明：一般不需要修改此文件。作品的所有信息都在 works-data.js 里，
+ * CSS 在 styles.css 里。此文件只负责把数据变成 DOM。
+ *
+ * 核心流程：works-data.js → getVisibleWorks() → createWorkCard() → renderWorks()
+ */
 
 // ---------- 当前的筛选和排序状态 ----------
 // 把"界面现在是什么状态"集中放在这里，而不是散落在各个函数里。
@@ -12,7 +16,8 @@ let newestFirst = true
 // ---------- 把一条数据变成一张卡片 ----------
 function createWorkCard(work) {
   const item = document.createElement('li')
-  item.className = 'work-card'
+  // coverClass 让 CSS 能给每张作品设置独特的封面背景色
+  item.className = work.coverClass ? `work-card ${work.coverClass}` : 'work-card'
 
   // 年份徽标，贴在封面右上角
   const year = document.createElement('span')

@@ -19,7 +19,7 @@ const ok = (msg) => console.log('  [OK]', msg);
 const bad = (msg) => { problems.push(msg); console.log('  [X] ', msg); };
 
 console.log('== 1. 必须有的文件 ==');
-for (const name of ['index.html', 'styles.css', 'app.js']) {
+for (const name of ['index.html', 'styles.css', 'app.js', 'works-data.js', 'works-render.js']) {
   if (fs.existsSync(path.join(root, name))) ok(name);
   else bad(`缺少 ${name}`);
 }
@@ -71,6 +71,35 @@ for (const tag of imgs) {
   else if (!found[1].trim()) bad(`图片的 alt 是空的：${brief}`);
   else if (WEAK_ALT.has(found[1].trim())) bad(`alt 写得太笼统（"${found[1]}"）：${brief}`);
   else ok(found[1]);
+}
+
+console.log('\n== 5. works-data.js 中的作品数据 ==');
+// 作品卡片已改为数据驱动（works-render.js 自动生成），
+// 这里额外检查：数据文件的语法是否正确、引用的本地图片是否存在、url 是否以 http(s) 开头。
+const dataPath = path.join(root, 'works-data.js');
+if (fs.existsSync(dataPath)) {
+  const dataSrc = fs.readFileSync(dataPath, 'utf8');
+  // 用 Function 安全执行（const works = [...] 后面要暴露出来）
+  try {
+    const works = new Function(`${dataSrc}; return works;`)();
+    ok(`works-data.js 语法正确，共 ${works.length} 个作品`);
+    works.forEach((w, i) => {
+      // 检查必填字段
+      if (!w.title) bad(`作品 #${i + 1} 缺少 title`);
+      if (!w.url) bad(`作品 #${i + 1} (${w.title || '?'}) 缺少 url`);
+      else if (!/^https?:\/\//.test(w.url)) bad(`作品 #${i + 1} url 不是 http(s) 开头：${w.url}`);
+      // 本地图片路径检查
+      if (w.image && !/^[a-z][a-z0-9+.-]*:/i.test(w.image)) {
+        const target = path.join(root, w.image);
+        if (fs.existsSync(target)) ok(`作品 #${i + 1} 图片 ${w.image}`);
+        else bad(`作品 #${i + 1} 引用了不存在的图片：${w.image}`);
+      }
+    });
+  } catch (e) {
+    bad(`works-data.js 语法错误：${e.message}`);
+  }
+} else {
+  bad('缺少 works-data.js');
 }
 
 console.log('');

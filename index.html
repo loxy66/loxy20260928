@@ -1,75 +1,73 @@
+<!--
+==============================================================================
+  个人主页（课程练习版）
+  ==============================================================================
+  【运维维护指南】
+  · 本页共 7 个栏目（#about #experience #projects #skills #portfolio
+    #teaching #publications），对应顶部导航。要增删栏目需同步改 nav 和 app.js。
+  · 作品卡片不在这里改——去 works-data.js（数据驱动，改了 JS 自动生成）。
+  · 每个可编辑区块用注释标记，搜索 "🔧" 即可定位到所有待修改位置。
+  ==============================================================================
+-->
 <!DOCTYPE html>
 <html lang="zh-CN">
- <head>
+<head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <meta content="noindex, nofollow" name="robots"/>
+  <!-- 🔧 [SEO] 修改网站描述，会出现在搜索引擎搜索结果中 -->
   <meta content="课程练习：个人介绍、技能与作品门户。" name="description"/>
-  <title>
-   我的个人主页
-  </title>
+  <!-- 🔧 [SEO] 修改浏览器标签页标题 -->
+  <title>我的个人主页</title>
   <link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-  <!-- CSS 负责颜色、字体、布局；defer 让 JavaScript 在 HTML 解析完成后执行。 -->
+  <!-- 样式表：控制颜色、字体、布局 -->
   <link href="styles.css" rel="stylesheet"/>
-   <script src="works-data.js" defer></script>
-  <script src="works-render.js" defer></script>
-  <script src="app.js" defer></script>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   跳到正文
-  </a>
-  <!-- 第 4 课新增①：顶部阅读进度条，宽度由 JavaScript 控制 -->
-  <div class="reading-progress" id="reading-progress">
-  </div>
+  <!-- 脚本按依赖顺序加载（defer 保证在 DOM 解析完后才执行） -->
+  <script src="works-data.js" defer></script>       <!-- 作品数据（修改作品只动这个） -->
+  <script src="works-render.js" defer></script>    <!-- 把数据渲染成卡片 -->
+  <script src="app.js" defer></script>             <!-- 导航高亮、进度条、返回顶部等交互 -->
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <!-- 顶部阅读进度条：宽度由 app.js 按滚动比例设置；不写 JS 时 invisible -->
+  <div class="reading-progress" id="reading-progress"></div>
+
+  <!-- ========== 顶部导航栏（固定在页面顶部） ========== -->
+  <!-- 🔧 [导航] 修改品牌名和各栏目锚点；新增栏目时要同步加一条 nav a -->
   <header class="site-header">
-   <div class="container header-inner">
-    <a class="brand" href="#about">
-     我的主页
-    </a>
-    <!-- href="#栏目ID" 是原生锚点：即使不加载 JavaScript，也能跳到对应栏目。 -->
-    <nav aria-label="主导航">
-     <a href="#about">
-      关于
-     </a>
-     <a href="#experience">
-      经历
-     </a>
-     <a href="#projects">
-      科研
-     </a>
-     <a href="#skills">
-      技能
-     </a>
-     <a href="#portfolio">
-      作品
-     </a>
-     <a href="#teaching">
-      教学
-     </a>
-     <a href="#publications">
-      成果
-     </a>
-    </nav>
-   </div>
+    <div class="container header-inner">
+      <a class="brand" href="#about">我的主页</a>
+      <nav aria-label="主导航">
+        <a href="#about">关于</a>
+        <a href="#experience">经历</a>
+        <a href="#projects">科研</a>
+        <a href="#skills">技能</a>
+        <a href="#portfolio">作品</a>
+        <a href="#teaching">教学</a>
+        <a href="#publications">成果</a>
+      </nav>
+    </div>
   </header>
+
   <main id="main">
-   <!-- HTML 练习：修改姓名、研究方向、照片路径和联系方式。 -->
-   <section class="hero" id="about">
+    <!-- ========== SECTION 1: 关于 / Hero 首屏 ========== -->
+    <!-- 🔧 [个人信息] 姓名、身份、学校、头像、学习方向、联系方式都在这里 -->
+    <section class="hero" id="about">
     <div class="container">
      <div class="hero-top">
       <div class="hero-copy">
        <h1>
-        林同学
+        梁展昊
         <span>
-         Lin
+         Liang
         </span>
        </h1>
        <p class="hero-role">
         软件技术专业学生 · 前端开发学习者
        </p>
        <p class="hero-school">
-        我的学校 · 我的班级
+        广东科学职业技术学院 · 大模型开发应用
        </p>
       </div>
       <div class="hero-visual">
@@ -116,13 +114,15 @@
         学校地址
        </span>
        <p>
-        请填写自己的学校地址
+        广东省珠海市金湾区珠海大道南侧65号
        </p>
       </div>
      </div>
     </div>
    </section>
-   <!-- 每个栏目复用 section → container → 标题/内容 的结构，统一由 CSS 控制样式。 -->
+
+   <!-- ========== SECTION 2: 教育与工作经历 ========== -->
+   <!-- 🔧 [经历] 复制 <div class="experience-item">...对应的闭合标签... 可增加一条 -->
    <section class="section" id="experience">
     <div class="container">
      <header class="section-heading">
@@ -148,6 +148,9 @@
      </div>
     </div>
    </section>
+
+   <!-- ========== SECTION 3: 项目 / 科研经历 ========== -->
+   <!-- 🔧 [项目] 复制 <article class="research-item"> 可增加一条 -->
    <section class="section" id="projects">
     <div class="container">
      <header class="section-heading">
@@ -170,6 +173,9 @@
      </div>
     </div>
    </section>
+
+   <!-- ========== SECTION 4: 技能与实践 ========== -->
+   <!-- 🔧 [技能] 修改 <ul class="skills-list"> 内的 <li> 列表 -->
    <section class="section" id="skills">
     <div class="container">
      <header class="section-heading">
@@ -201,6 +207,9 @@
      </div>
     </div>
    </section>
+
+   <!-- ========== SECTION 5: 作品门户（数据驱动） ========== -->
+   <!-- 🔧 [作品] 新增/修改作品 → works-data.js（不要手动在这里添加 <li>） -->
    <section class="section" id="portfolio">
     <div class="container">
      <header class="section-heading">
@@ -220,70 +229,14 @@
        按年份：新→旧
       </button>
      </div>
-     <ol class="portfolio-list">
-      <li class="work-card work-blog">
-       <a href="https://ffd-p2-blog.netlify.app/" rel="noopener noreferrer" target="_blank">
-        <div class="work-cover">
-         <img alt="长风成卷 · 博客应用的实际网页截图" decoding="async" height="800" src="assets/work-blog.png" width="1200"/>
-        </div>
-        <div class="work-copy">
-         <h3>
-          长风成卷 · 博客应用
-         </h3>
-         <p>
-          文章展示、接口与数据库。
-         </p>
-        </div>
-       </a>
-      </li>
-      <li class="work-card work-community">
-       <a href="https://ffd-p3-community.netlify.app/" rel="noopener noreferrer" target="_blank">
-        <div class="work-cover">
-         <img alt="群像云图 · 社区应用的实际网页截图" decoding="async" height="800" src="assets/work-community.png" width="1200"/>
-        </div>
-        <div class="work-copy">
-         <h3>
-          群像云图 · 社区应用
-         </h3>
-         <p>
-          内容发布与社区互动。
-         </p>
-        </div>
-       </a>
-      </li>
-      <li class="work-card work-greeting-card">
-       <a href="https://ffd-p4-greeting-card.netlify.app/" rel="noopener noreferrer" target="_blank">
-        <div class="work-cover">
-         <img alt="一笺心意 · 祝福卡片的实际网页截图" decoding="async" height="800" src="assets/work-greeting-card.png" width="1200"/>
-        </div>
-        <div class="work-copy">
-         <h3>
-          一笺心意 · 祝福卡片
-         </h3>
-         <p>
-          卡片制作与作品分享。
-         </p>
-        </div>
-       </a>
-      </li>
-      <li class="work-card work-music-station">
-       <a href="https://ffd-p5-music-station.netlify.app/" rel="noopener noreferrer" target="_blank">
-        <div class="work-cover">
-         <img alt="星声音乐站 · 音乐应用的实际网页截图" decoding="async" height="800" src="assets/work-music-station.png" width="1200"/>
-        </div>
-        <div class="work-copy">
-         <h3>
-          星声音乐站 · 音乐应用
-         </h3>
-         <p>
-          网页音频与交互实践。
-         </p>
-        </div>
-       </a>
-      </li>
-     </ol>
+     <!-- 作品列表：由 works-data.js + works-render.js 自动生成，
+          不要手动在这里添加 <li>，改作品只去 works-data.js。 -->
+     <ol class="portfolio-list"></ol>
     </div>
    </section>
+
+   <!-- ========== SECTION 6: 学习与实践 ========== -->
+   <!-- 🔧 [目标] 修改 <div class="teaching-group"> 内的 <li> 列表 -->
    <section class="section" id="teaching">
     <div class="container">
      <header class="section-heading">
@@ -311,6 +264,9 @@
      </div>
     </div>
    </section>
+
+   <!-- ========== SECTION 7: 学习记录 ========== -->
+   <!-- 🔧 [成果] 修改 <ol class="references"> 内的 <li> 列表 -->
    <section class="section" id="publications">
     <div class="container">
      <header class="section-heading">
